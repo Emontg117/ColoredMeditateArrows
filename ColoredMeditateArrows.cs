@@ -52,16 +52,16 @@ namespace ColoredMeditateArrows
                 switch (self.seekerController.meditationStepAndSequence[index + 1])
                 {
                     case 0:
-                        self.overlayInstanceChildLocator.FindChild(EntityStates.Seeker.MeditationUI.c[index]).GetComponent<Image>().color = Color.red;
+                        self.overlayInstanceChildLocator.FindChild(EntityStates.Seeker.MeditationUI.c[index]).GetComponent<Image>().color = new Color32(213, 94, 0, 255);
                         break;
                     case 1:
-                        self.overlayInstanceChildLocator.FindChild(EntityStates.Seeker.MeditationUI.c[index]).GetComponent<Image>().color = Color.green;
+                        self.overlayInstanceChildLocator.FindChild(EntityStates.Seeker.MeditationUI.c[index]).GetComponent<Image>().color = new Color32(0, 114, 178, 255);
                         break;
                     case 2:
-                        self.overlayInstanceChildLocator.FindChild(EntityStates.Seeker.MeditationUI.c[index]).GetComponent<Image>().color = Color.blue;
+                        self.overlayInstanceChildLocator.FindChild(EntityStates.Seeker.MeditationUI.c[index]).GetComponent<Image>().color = new Color32(230, 159, 0, 255);
                         break;
                     case 3:
-                        self.overlayInstanceChildLocator.FindChild(EntityStates.Seeker.MeditationUI.c[index]).GetComponent<Image>().color = Color.yellow;
+                        self.overlayInstanceChildLocator.FindChild(EntityStates.Seeker.MeditationUI.c[index]).GetComponent<Image>().color = new Color32(204, 121, 167, 255);
                         break;
                 }
             }

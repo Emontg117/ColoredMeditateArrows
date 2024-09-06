@@ -1,7 +1,7 @@
 ﻿{
 	"name": "ColoredMeditateArrows",
 	"version_number": "1.0.0",
-	"website_url": "",
+	"website_url": "https://github.com/Emontg117/ColoredMeditateArrows",
 	"description": "This mod changes the colors of Seeker's Meditate arrows to make them easier to read.",
 	"dependencies": [
 		"bbepis-BepInExPack-5.4.2108",
