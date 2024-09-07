@@ -1,8 +1,5 @@
 using BepInEx;
-using EntityStates.Seeker;
-using IL.RoR2;
-using On.EntityStates.Seeker;
-using On.EntityStates.Toolbot;
+using RiskOfOptions;
 using On.RoR2;
 using R2API;
 using Rewired;
@@ -11,11 +8,14 @@ using RoR2.UI;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
+using RiskOfOptions.Options;
+using BepInEx.Configuration;
 
 namespace ColoredMeditateArrows
 {
     // This attribute is required, and lists metadata for your plugin.
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
+    [BepInDependency("com.rune580.riskofoptions")]
 
     // This is the main declaration of our plugin class.
     // BepInEx searches for all classes inheriting from BaseUnityPlugin to initialize on startup.
@@ -34,13 +34,31 @@ namespace ColoredMeditateArrows
         public const string PluginName = "ColoredMeditateArrows";
         public const string PluginVersion = "1.0.0";
 
+        ConfigEntry<Color> upArrowColor;
+        ConfigEntry<Color> downArrowColor;
+        ConfigEntry<Color> rightArrowColor;
+        ConfigEntry<Color> leftArrowColor;
+
         // The Awake() method is run at the very start when the game is initialized.
         public void Awake()
         {
             // Init our logging class so that we can properly log for debugging
             Log.Init(Logger);
-
+            ConfigOptions();
             On.EntityStates.Seeker.MeditationUI.SetupInputUIIcons += OnEntityStates_Seeker_MeditationUI_SetupInputUIIcons;
+        }
+
+        private void ConfigOptions()
+        {
+            upArrowColor = Config.Bind<Color>("General", "ColorPickerUp", Color.red, "Color Picker to modify Up Arrow");
+            downArrowColor = Config.Bind<Color>("General", "ColorPickerDown", Color.blue, "Color Picker to modify Down Arrow");
+            rightArrowColor = Config.Bind<Color>("General", "ColorPickerRight", Color.yellow, "Color Picker to modify Right Arrow");
+            leftArrowColor = Config.Bind<Color>("General", "ColorPickerLeft", Color.green, "Color Picker to modify Up Arrow");
+
+            ModSettingsManager.AddOption(new ColorOption(upArrowColor));
+            ModSettingsManager.AddOption(new ColorOption(downArrowColor));
+            ModSettingsManager.AddOption(new ColorOption(rightArrowColor));
+            ModSettingsManager.AddOption(new ColorOption(leftArrowColor));
         }
 
         private void OnEntityStates_Seeker_MeditationUI_SetupInputUIIcons(On.EntityStates.Seeker.MeditationUI.orig_SetupInputUIIcons orig, EntityStates.Seeker.MeditationUI self)
@@ -51,17 +69,17 @@ namespace ColoredMeditateArrows
             {
                 switch (self.seekerController.meditationStepAndSequence[index + 1])
                 {
-                    case 0:
-                        self.overlayInstanceChildLocator.FindChild(EntityStates.Seeker.MeditationUI.c[index]).GetComponent<Image>().color = new Color32(213, 94, 0, 255);
+                    case 0: // Up Arrow
+                        self.overlayInstanceChildLocator.FindChild(EntityStates.Seeker.MeditationUI.c[index]).GetComponent<Image>().color = upArrowColor.Value;
                         break;
-                    case 1:
-                        self.overlayInstanceChildLocator.FindChild(EntityStates.Seeker.MeditationUI.c[index]).GetComponent<Image>().color = new Color32(0, 114, 178, 255);
+                    case 1: // Down Arrow
+                        self.overlayInstanceChildLocator.FindChild(EntityStates.Seeker.MeditationUI.c[index]).GetComponent<Image>().color = downArrowColor.Value;
                         break;
-                    case 2:
-                        self.overlayInstanceChildLocator.FindChild(EntityStates.Seeker.MeditationUI.c[index]).GetComponent<Image>().color = new Color32(230, 159, 0, 255);
+                    case 2: // Right Arrow
+                        self.overlayInstanceChildLocator.FindChild(EntityStates.Seeker.MeditationUI.c[index]).GetComponent<Image>().color = rightArrowColor.Value;
                         break;
-                    case 3:
-                        self.overlayInstanceChildLocator.FindChild(EntityStates.Seeker.MeditationUI.c[index]).GetComponent<Image>().color = new Color32(204, 121, 167, 255);
+                    case 3: // Left Arrow
+                        self.overlayInstanceChildLocator.FindChild(EntityStates.Seeker.MeditationUI.c[index]).GetComponent<Image>().color = leftArrowColor.Value;
                         break;
                 }
             }

@@ -1,3 +1,4 @@
-## 1.0.0
+## 1.1.0
 
-- First release
+- Added RiskOfOptions Dependency
+- Created Config through RiskOfOptions for customizing arrow colors
