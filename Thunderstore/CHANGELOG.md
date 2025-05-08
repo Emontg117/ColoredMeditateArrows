@@ -1,4 +1,3 @@
-## 1.1.0
+## 1.2.0
 
-- Added RiskOfOptions Dependency
-- Created Config through RiskOfOptions for customizing arrow colors
+- Updated to work with SOTS 2.0 update

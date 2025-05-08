@@ -5,6 +5,7 @@ using R2API;
 using Rewired;
 using RoR2;
 using RoR2.UI;
+using Unity;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
@@ -32,7 +33,7 @@ namespace ColoredMeditateArrows
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "SirFrogsAlot";
         public const string PluginName = "ColoredMeditateArrows";
-        public const string PluginVersion = "1.0.0";
+        public const string PluginVersion = "1.2.0";
 
         ConfigEntry<Color> upArrowColor;
         ConfigEntry<Color> downArrowColor;
@@ -45,7 +46,7 @@ namespace ColoredMeditateArrows
             // Init our logging class so that we can properly log for debugging
             Log.Init(Logger);
             ConfigOptions();
-            On.EntityStates.Seeker.MeditationUI.SetupInputUIIcons += OnEntityStates_Seeker_MeditationUI_SetupInputUIIcons;
+            On.EntityStates.Seeker.Meditate.SetupInputUIIcons += OnEntityStates_Seeker_Meditate_SetupInputUIIcons;
         }
 
         private void ConfigOptions()
@@ -61,7 +62,7 @@ namespace ColoredMeditateArrows
             ModSettingsManager.AddOption(new ColorOption(leftArrowColor));
         }
 
-        private void OnEntityStates_Seeker_MeditationUI_SetupInputUIIcons(On.EntityStates.Seeker.MeditationUI.orig_SetupInputUIIcons orig, EntityStates.Seeker.MeditationUI self)
+        private void OnEntityStates_Seeker_Meditate_SetupInputUIIcons(On.EntityStates.Seeker.Meditate.orig_SetupInputUIIcons orig, EntityStates.Seeker.Meditate self)
         {
             orig(self);
 
@@ -70,16 +71,16 @@ namespace ColoredMeditateArrows
                 switch (self.seekerController.meditationStepAndSequence[index + 1])
                 {
                     case 0: // Up Arrow
-                        self.overlayInstanceChildLocator.FindChild(EntityStates.Seeker.MeditationUI.c[index]).GetComponent<Image>().color = upArrowColor.Value;
+                        self.overlayInstanceChildLocator.FindChild(EntityStates.Seeker.Meditate.c[index]).GetComponent<Image>().color = upArrowColor.Value;
                         break;
                     case 1: // Down Arrow
-                        self.overlayInstanceChildLocator.FindChild(EntityStates.Seeker.MeditationUI.c[index]).GetComponent<Image>().color = downArrowColor.Value;
+                        self.overlayInstanceChildLocator.FindChild(EntityStates.Seeker.Meditate.c[index]).GetComponent<Image>().color = downArrowColor.Value;
                         break;
                     case 2: // Right Arrow
-                        self.overlayInstanceChildLocator.FindChild(EntityStates.Seeker.MeditationUI.c[index]).GetComponent<Image>().color = rightArrowColor.Value;
+                        self.overlayInstanceChildLocator.FindChild(EntityStates.Seeker.Meditate.c[index]).GetComponent<Image>().color = rightArrowColor.Value;
                         break;
                     case 3: // Left Arrow
-                        self.overlayInstanceChildLocator.FindChild(EntityStates.Seeker.MeditationUI.c[index]).GetComponent<Image>().color = leftArrowColor.Value;
+                        self.overlayInstanceChildLocator.FindChild(EntityStates.Seeker.Meditate.c[index]).GetComponent<Image>().color = leftArrowColor.Value;
                         break;
                 }
             }

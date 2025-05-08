@@ -1,3 +1,3 @@
 # Colored Meditate Arrows
 
-This mod color changes the color of the arrows that display during Seeker's Meditate ability to make them easier to read. Now customizable with RiskOfOptions!
+This mod allows you to select the colors of seeker's meditate arrows. Now compatible with SOTS 2.0!
