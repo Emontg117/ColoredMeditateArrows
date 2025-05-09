@@ -33,33 +33,40 @@ namespace ColoredMeditateArrows
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "SirFrogsAlot";
         public const string PluginName = "ColoredMeditateArrows";
-        public const string PluginVersion = "1.2.0";
+        public const string PluginVersion = "1.3.0";
 
         ConfigEntry<Color> upArrowColor;
         ConfigEntry<Color> downArrowColor;
         ConfigEntry<Color> rightArrowColor;
         ConfigEntry<Color> leftArrowColor;
+        ConfigEntry<Color> completedColor;
+
+        Color completedArrowColor;
 
         // The Awake() method is run at the very start when the game is initialized.
         public void Awake()
         {
             // Init our logging class so that we can properly log for debugging
             Log.Init(Logger);
+            completedArrowColor = new Color(255, 233, 124);
             ConfigOptions();
             On.EntityStates.Seeker.Meditate.SetupInputUIIcons += OnEntityStates_Seeker_Meditate_SetupInputUIIcons;
+            On.EntityStates.Seeker.Meditate.UpdateUIInputSequence += OnEntityStates_Seeker_Meditate_UpdateUIInputSequence;
         }
 
         private void ConfigOptions()
         {
-            upArrowColor = Config.Bind<Color>("General", "ColorPickerUp", Color.red, "Color Picker to modify Up Arrow");
-            downArrowColor = Config.Bind<Color>("General", "ColorPickerDown", Color.blue, "Color Picker to modify Down Arrow");
-            rightArrowColor = Config.Bind<Color>("General", "ColorPickerRight", Color.yellow, "Color Picker to modify Right Arrow");
-            leftArrowColor = Config.Bind<Color>("General", "ColorPickerLeft", Color.green, "Color Picker to modify Up Arrow");
+            upArrowColor = Config.Bind<Color>("General", "Up Arrow", Color.red, "Color Picker to modify Up Arrow");
+            downArrowColor = Config.Bind<Color>("General", "Down Arrow", Color.blue, "Color Picker to modify Down Arrow");
+            rightArrowColor = Config.Bind<Color>("General", "Right Arrow", Color.yellow, "Color Picker to modify Right Arrow");
+            leftArrowColor = Config.Bind<Color>("General", "Left Arrow", Color.green, "Color Picker to modify Up Arrow");
+            completedColor = Config.Bind<Color>("General", "Completed Arrow", completedArrowColor, "Color Picker to modify the Completed Arrow");
 
             ModSettingsManager.AddOption(new ColorOption(upArrowColor));
             ModSettingsManager.AddOption(new ColorOption(downArrowColor));
             ModSettingsManager.AddOption(new ColorOption(rightArrowColor));
             ModSettingsManager.AddOption(new ColorOption(leftArrowColor));
+            ModSettingsManager.AddOption(new ColorOption(completedColor));
         }
 
         private void OnEntityStates_Seeker_Meditate_SetupInputUIIcons(On.EntityStates.Seeker.Meditate.orig_SetupInputUIIcons orig, EntityStates.Seeker.Meditate self)
@@ -84,6 +91,14 @@ namespace ColoredMeditateArrows
                         break;
                 }
             }
+        }
+
+        private void OnEntityStates_Seeker_Meditate_UpdateUIInputSequence(On.EntityStates.Seeker.Meditate.orig_UpdateUIInputSequence orig, EntityStates.Seeker.Meditate self)
+        {
+            orig(self);
+
+            for (int index = 0; index < (int)self.seekerController.meditationInputStep; ++index)
+                self.overlayInstanceChildLocator.FindChild(EntityStates.Seeker.Meditate.c[index]).GetComponent<Image>().color = completedColor.Value;
         }
         // The Update() method is run on every frame of the game.
         private void Update()
